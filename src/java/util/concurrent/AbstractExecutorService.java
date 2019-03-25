@@ -70,10 +70,7 @@ public abstract class AbstractExecutorService implements ExecutorService {
         return ftask;
     }
 
-    /**
-     * @throws RejectedExecutionException {@inheritDoc}
-     * @throws NullPointerException       {@inheritDoc}
-     */
+
     public <T> Future<T> submit(Callable<T> task) {
         if (task == null) throw new NullPointerException();
         RunnableFuture<T> ftask = newTaskFor(task);

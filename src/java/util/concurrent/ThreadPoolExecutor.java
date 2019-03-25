@@ -439,7 +439,6 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
             int c = ctl.get();
             //获取当前线程的状态
             int rs = runStateOf(c);
-
             // Check if queue empty only if necessary.
             /**
              * 此表达式为真的情况有如下几种
@@ -449,7 +448,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
              * 也就是之前提到的状态为shutdown时，不再允许添加新的任务，但是会执行已在任务队列中的任务；当前状态为stop,tidying,terminated时标示
              * 不会在处理任务
              */
-            //1。线程池的状态大于SHUTDOWN时，可定不能在添加任务了
+            //1。线程池的状态大于SHUTDOWN时，肯定不能在添加任务了
             //2。如果线程池状态为SHUTDOWN，提交的任务不为null时，则直接返回false；如果提交的任务为null，如果任务队列为空，直接返回添加失败。
             //
             if (rs >= SHUTDOWN &&
@@ -825,7 +824,7 @@ public class ThreadPoolExecutor extends AbstractExecutorService {
             //添加任务 添加成功则直接返回
             if (addWorker(command, true))
                 return;
-            //添加失败则重新获取
+            //添加失败,说明有其他的任务加进来了，则重新获取
             c = ctl.get();
         }
         //此时表示线程池处于运行中，并且将任务添加到队列中，如果添加成功
